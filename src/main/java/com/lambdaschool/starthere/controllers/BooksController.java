@@ -63,6 +63,14 @@ public class BooksController {
     }
 
 
+    @PostMapping(value =  "addbook")
+    public ResponseEntity<?> addBook(@RequestBody Book addBook) {
+        bookService.addbook(addBook);
+        logger.info("/addbook POST endpoint accessed");
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
     @ApiOperation(value = "updates a book on the database", response = Book.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "book successfully updated", response = Book.class),

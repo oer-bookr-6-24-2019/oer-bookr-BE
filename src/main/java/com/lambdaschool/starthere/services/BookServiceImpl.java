@@ -68,4 +68,9 @@ public class BookServiceImpl implements BookService {
         return currentBook.getReviews().add(review);
     }
 
+    @Override
+    public void addbook(Book addBook) {
+        repo.save(addBook);
+    }
+
 }
