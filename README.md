@@ -1,5 +1,20 @@
 # oer-bookr-BackEnd
 
+### Create user
+
+## https://sgs-lambda-bookr.herokuapp.com/createnewuser
+
+Body (application/Json)
+```
+"username" : "yourUsername"
+"password" : "yourPassword"
+```
+
+Returns
+```
+empty []
+```
+https://sgs-lambda-bookr.herokuapp.com/users/users to list all users
 
 
 ### Login
@@ -11,7 +26,7 @@ Authorization : Basic bGFtYmRhLWNsaWVudDpsYW1iZGEtc2VjcmV0
 Content-Type : application/x-www-form-urlencoded
 ```
 Body (application/x-www-form-urlencoded)
-parenthesized parameters used for testing
+parenthesized values used for testing
 ```
 grant_type : password
 username : yourUsername (admin)
@@ -31,27 +46,12 @@ Returns:
 
 
 ### Books
-## https://sgs-lambda-bookr.herokuapp.com/book/books
 
-Returns:
-```
-[
-  {
-    "author": "string",
-    "bookid": 0,
-    "booktitle": "string",
-    "imageurl": "string",
-    "license": "string",
-    "publisher": "string",
-    "reviews": [
-      {
-        "rating": 0,
-        "review": "string",
-        "reviewid": 0,
-        "user": "string"
-      }
-    ],
-    "url": "string"
-  }
-]
-```
+## https://sgs-lambda-bookr.herokuapp.com/swagger-ui.html#/books-controller
+
+
+### Reviews
+
+## https://sgs-lambda-bookr.herokuapp.com/swagger-ui.html#/reviews-controller
+
+
