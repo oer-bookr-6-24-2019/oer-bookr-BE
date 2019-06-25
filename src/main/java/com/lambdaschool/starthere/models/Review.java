@@ -2,6 +2,7 @@ package com.lambdaschool.starthere.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
 
@@ -12,7 +13,7 @@ public class Review extends Auditable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long reviewid;
 
-    @Column(unique = true)
+    @Column
     private String review;
 
     @Column
@@ -24,6 +25,7 @@ public class Review extends Auditable {
     @ManyToOne
     @JsonIgnoreProperties("reviews")
     private Book book;
+
 
 
 
@@ -72,4 +74,6 @@ public class Review extends Auditable {
     public void setBook(Book book) {
         this.book = book;
     }
+
+
 }

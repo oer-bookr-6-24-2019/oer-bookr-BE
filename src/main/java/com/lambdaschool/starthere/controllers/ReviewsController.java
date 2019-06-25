@@ -75,10 +75,12 @@ public class ReviewsController {
         return new ResponseEntity<>(myReviews, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/byreview/{reviewid}")
+    @PutMapping(value = "/update/byreview/{reviewid}")
     public ResponseEntity<?> editReview(@PathVariable long reviewid, @RequestBody Review review) {
-        reviewService.updateReview(review, reviewid);
-        logger.info("/reviews/byreview/{reviewid} PUT accessed");
+        if (reviewService.updateReview(review, reviewid) == null) {
+            throw new ResourceNotFoundException("You did not post this review");
+        }
+        logger.info("/update/reviews/byreview/{reviewid} PUT accessed");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -44,14 +44,17 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Review updateReview(Review review, long reviewid) {
         Review currentReview = reviewRepo.findById(reviewid).orElseThrow(EntityNotFoundException::new);
-        if(review.getReview() != null){
-            currentReview.setBook(review.getBook());
-            currentReview.setRating(review.getRating());
-            currentReview.setReview(review.getReview());
-            currentReview.setUser(review.getUser());
+        if(review.getUser().equals (currentReview.getUser())) { //weak authentication
+            if (review.getReview() != null) {
+                currentReview.setBook(review.getBook());
+                currentReview.setRating(review.getRating());
+                currentReview.setReview(review.getReview());
+                currentReview.setUser(review.getUser());
+            }
+            reviewRepo.save(currentReview);
+            return currentReview;
         }
-        reviewRepo.save(currentReview);
-        return currentReview;
+        else return null;
     }
 
     @Override
