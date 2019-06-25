@@ -52,4 +52,9 @@ public class ReviewServiceImpl implements ReviewService {
         repo.save(currentReview);
         return currentReview;
     }
+
+    @Override
+    public void delete(long reviewid) {
+        repo.deleteById(reviewid);
+    }
 }

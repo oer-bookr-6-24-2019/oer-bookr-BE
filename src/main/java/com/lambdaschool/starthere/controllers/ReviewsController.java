@@ -99,5 +99,22 @@ public class ReviewsController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @ApiOperation(value = "deletes a review by review id", response = Book.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "review successfully deleted", response = Review.class),
+            @ApiResponse(code = 500, message = "failed to delete review", response = ErrorDetail.class)
+    })
+    @DeleteMapping(value = "/delete/{reviewid}}")
+    public ResponseEntity<?> deleteReview(@PathVariable long reviewid) {
+
+
+        reviewService.delete(reviewid);
+
+        logger.info("/reviews/delete/{reviewid} DELETE endpoint accessed");
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
 }

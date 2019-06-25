@@ -14,4 +14,6 @@ public interface ReviewService {
     List<Review> findReviewsByBook(Pageable pageable, Long id);
 
     Review updateReview(Review review, long reviewid);
+
+    void delete(long reviewid);
 }
