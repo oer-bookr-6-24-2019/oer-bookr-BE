@@ -14,7 +14,7 @@ Returns
 ```
 empty []
 ```
-https://sgs-lambda-bookr.herokuapp.com/users/users to list all users
+https://sgs-lambda-bookr.herokuapp.com/users/users to list all users (must be admin)
 
 
 ### Login
