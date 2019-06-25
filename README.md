@@ -49,9 +49,33 @@ Returns:
 
 ## https://sgs-lambda-bookr.herokuapp.com/swagger-ui.html#/books-controller
 
+books/add Example: 
+```
+{
+  "author": "string",
+  "booktitle": "string",
+  "imageurl": "string",
+  "license": "string",
+  "publisher": "string",
+  "url": "string"
+}
+```
+
 
 ### Reviews
 
 ## https://sgs-lambda-bookr.herokuapp.com/swagger-ui.html#/reviews-controller
+
+reviews/add Example:
+```
+{
+  "book": {
+    "bookid": 10,
+  },
+  "rating": 4,
+  "review": "string",
+  "user": "string"
+}
+```
 
 
