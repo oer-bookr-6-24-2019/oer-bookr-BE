@@ -80,7 +80,7 @@ public class ReviewsController {
         if (reviewService.updateReview(review, reviewid) == null) {
             throw new ResourceNotFoundException("You did not post this review");
         }
-        logger.info("/update/reviews/byreview/{reviewid} PUT accessed");
+        logger.info("/reviews/update/byreview/{reviewid} PUT accessed");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -112,7 +112,7 @@ public class ReviewsController {
 
         reviewService.delete(reviewid);
 
-        logger.info("/reviews/delete/{reviewid} DELETE endpoint accessed");
+        logger.info("/delete/{reviewid} DELETE endpoint accessed");
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
