@@ -71,12 +71,9 @@ books/add Example:
 Documentation:
 ## https://sgs-lambda-bookr.herokuapp.com/swagger-ui.html#/reviews-controller
 
-reviews/add Example:
+reviews/add/bybookid/{bookid} Example:
 ```
 {
-  "book": {
-    "bookid": 10,
-  },
   "rating": 4,
   "review": "string",
   "user": "string"
