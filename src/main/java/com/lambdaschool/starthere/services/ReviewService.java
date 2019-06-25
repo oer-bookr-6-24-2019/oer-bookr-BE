@@ -16,4 +16,6 @@ public interface ReviewService {
     Review updateReview(Review review, long reviewid);
 
     void delete(long reviewid);
+
+    void saveByBook(Review review, Long bookid);
 }

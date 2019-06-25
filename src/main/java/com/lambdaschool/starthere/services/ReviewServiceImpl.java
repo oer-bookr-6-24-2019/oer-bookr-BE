@@ -17,44 +17,53 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
-    private ReviewRepository repo;
+    private ReviewRepository reviewRepo;
+
+    @Autowired
+    private BookRepository bookRepo;
 
     @Override
     public void save(Review review) {
-        repo.save(review);
+        reviewRepo.save(review);
     }
-
-
 
     @Override
     public List<Review> findAll(Pageable pageable) {
         List<Review> bookList = new ArrayList<>();
-        repo.findAll(pageable).iterator().forEachRemaining(bookList::add);
+        reviewRepo.findAll(pageable).iterator().forEachRemaining(bookList::add);
         return bookList;    }
 
     @Override
     public List<Review> findReviewsByBook(Pageable pageable, Long id) {
         List<Review> bookList = new ArrayList<>();
-        repo.findReviewsById(id).iterator().forEachRemaining(bookList::add);
+        reviewRepo.findReviewsById(id).iterator().forEachRemaining(bookList::add);
         return bookList;
     }
 
     @Transactional
     @Override
     public Review updateReview(Review review, long reviewid) {
-        Review currentReview = repo.findById(reviewid).orElseThrow(EntityNotFoundException::new);
+        Review currentReview = reviewRepo.findById(reviewid).orElseThrow(EntityNotFoundException::new);
         if(review.getReview() != null){
             currentReview.setBook(review.getBook());
             currentReview.setRating(review.getRating());
             currentReview.setReview(review.getReview());
             currentReview.setUser(review.getUser());
         }
-        repo.save(currentReview);
+        reviewRepo.save(currentReview);
         return currentReview;
     }
 
     @Override
     public void delete(long reviewid) {
-        repo.deleteById(reviewid);
+        reviewRepo.deleteById(reviewid);
+    }
+
+    @Override
+    public void saveByBook(Review review, Long bookid) {
+        Book book = bookRepo.findById(bookid).orElseThrow(EntityNotFoundException::new);
+        review.setBook(book);
+        book.getReviews().add(review);
+        reviewRepo.save(review);
     }
 }

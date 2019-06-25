@@ -83,18 +83,18 @@ public class ReviewsController {
     }
 
 
-    @ApiOperation(value = "adds a review to a book", response = Book.class)
+    @ApiOperation(value = "adds a review to a book by bookid", response = Book.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "review successfully added", response = Review.class),
             @ApiResponse(code = 500, message = "failed to add review", response = ErrorDetail.class)
     })
-    @PostMapping(value = "/add}")
-    public ResponseEntity<?> postReview(@RequestBody Review review) {
+    @PostMapping(value = "/add/bybookid/{bookid}")
+    public ResponseEntity<?> postReview(@RequestBody Review review, @PathVariable Long bookid) {
 
 
-        reviewService.save(review);
+        reviewService.saveByBook(review, bookid);
 
-        logger.info("/reviews/add POST endpoint accessed");
+        logger.info("/reviews/add/bybookid/{bookid} POST endpoint accessed");
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

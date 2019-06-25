@@ -1,6 +1,7 @@
 package com.lambdaschool.starthere.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ public class Book extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long bookid;
-
 
     @Column(nullable = false)
     private String booktitle;
