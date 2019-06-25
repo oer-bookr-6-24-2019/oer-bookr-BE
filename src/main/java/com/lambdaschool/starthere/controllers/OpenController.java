@@ -7,18 +7,16 @@ import com.lambdaschool.starthere.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -38,23 +36,47 @@ public class OpenController
     @RequestBody
             User newuser) throws URISyntaxException
     {
+
         logger.trace(request.getRequestURI() + " accessed");
 
         ArrayList<UserRoles> newRoles = new ArrayList<>();
         newRoles.add(new UserRoles(newuser, roleService.findByName("user")));
         newuser.setUserRoles(newRoles);
 
-        newuser =  userService.save(newuser);
+        String temp = newuser.getPasswordRaw();
+        newuser =  userService.save(newuser); //passwordRaw is nullified
 
-        // set the location header for the newly created resource - to another controller!
+
+        String loginUrl
+                = "https://sgs-lambda-bookr.herokuapp.com//oauth/token";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        headers.add("Authorization", "Basic bGFtYmRhLWNsaWVudDpsYW1iZGEtc2VjcmV0");
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("grant_type", "password");
+        map.add("username", newuser.getUsername());
+        map.add("password", temp);
+        HttpEntity<MultiValueMap<String, String>> request2 = new HttpEntity<>(map, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(
+                loginUrl, request2 , String.class);
+
+
+
+
+/*        // set the location header for the newly created resource - to another controller!
         HttpHeaders responseHeaders = new HttpHeaders();
-        URI newRestaurantURI = ServletUriComponentsBuilder
+        URI createUserURI = ServletUriComponentsBuilder
                 .fromUriString(request.getServerName() + ":" + request.getLocalPort() + "/users/user/{userId}")
                 .buildAndExpand(newuser.getUserid()).toUri();
-        responseHeaders.setLocation(newRestaurantURI);
+        responseHeaders.setLocation(createUserURI);*/
 
 
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        return response;
+        //return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
 }

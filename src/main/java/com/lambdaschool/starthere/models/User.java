@@ -27,6 +27,9 @@ public class User extends Auditable
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @Column
+    private String passwordRaw;
+
     @OneToMany(mappedBy = "user",
                cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
@@ -40,6 +43,17 @@ public class User extends Auditable
     {
         setUsername(username);
         setPassword(password);
+        for (UserRoles ur : userRoles)
+        {
+            ur.setUser(this);
+        }
+        this.userRoles = userRoles;
+    }
+    public User(String username, String password, List<UserRoles> userRoles, Boolean encrypt)
+    {
+        setUsername(username);
+        if(encrypt) setPassword(password);
+        else setPasswordNoEncrypt(password);
         for (UserRoles ur : userRoles)
         {
             ur.setUser(this);
@@ -74,8 +88,13 @@ public class User extends Auditable
 
     public void setPassword(String password)
     {
+        this.passwordRaw = password;
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.password = passwordEncoder.encode(password);
+    }
+
+    public String getPasswordRaw() {
+        return passwordRaw;
     }
 
     public void setPasswordNoEncrypt(String password)
