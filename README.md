@@ -76,4 +76,14 @@ reviews/add/bybookid/{bookid} Example:
 }
 ```
 
+reviews/byreview/{reviewid} (PUT) Example:
+```
+{
+  "rating": 3,
+  "review": "changedString",
+  "user": "string"*
+}
+```
+*required
+
 
