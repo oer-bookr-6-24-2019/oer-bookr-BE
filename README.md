@@ -2,8 +2,7 @@
 
 ### Create user
 
-Endpoint:
-## https://sgs-lambda-bookr.herokuapp.com/createnewuser
+Endpoint: https://sgs-lambda-bookr.herokuapp.com/createnewuser
 
 Body (application/Json)
 ```
@@ -20,8 +19,7 @@ https://sgs-lambda-bookr.herokuapp.com/users/users to list all users (must be ad
 
 ### Login
 
-Endpoint:
-## https://sgs-lambda-bookr.herokuapp.com/oauth/token
+Endpoint: https://sgs-lambda-bookr.herokuapp.com/oauth/token
 
 Headers:
 ``` 
@@ -50,8 +48,7 @@ Returns:
 
 ### Books
 
-Documentation:
-## https://sgs-lambda-bookr.herokuapp.com/swagger-ui.html#/books-controller
+Documentation: https://sgs-lambda-bookr.herokuapp.com/swagger-ui.html#/books-controller
 
 books/add Example: 
 ```
@@ -68,8 +65,7 @@ books/add Example:
 
 ### Reviews
 
-Documentation:
-## https://sgs-lambda-bookr.herokuapp.com/swagger-ui.html#/reviews-controller
+Documentation: https://sgs-lambda-bookr.herokuapp.com/swagger-ui.html#/reviews-controller
 
 reviews/add/bybookid/{bookid} Example:
 ```
