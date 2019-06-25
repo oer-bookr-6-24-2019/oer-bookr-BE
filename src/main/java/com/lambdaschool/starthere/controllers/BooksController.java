@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/book")
+@RequestMapping(value = "/books")
 public class BooksController {
 
     private static final Logger logger = LoggerFactory.getLogger(Book.class);
@@ -51,7 +51,7 @@ public class BooksController {
             @ApiResponse(code = 200, message = "book found", response = Book.class),
             @ApiResponse(code = 500, message = "failed to find book", response = ErrorDetail.class)
     })
-    @GetMapping(value = "books/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<?> getBook(@PathVariable long id) {
 
         Book book = bookService.findBookById(id);
@@ -63,10 +63,10 @@ public class BooksController {
     }
 
 
-    @PostMapping(value =  "addbook")
+    @PostMapping(value =  "/add")
     public ResponseEntity<?> addBook(@RequestBody Book addBook) {
         bookService.addbook(addBook);
-        logger.info("/addbook POST endpoint accessed");
+        logger.info("books//add POST endpoint accessed");
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
@@ -76,7 +76,7 @@ public class BooksController {
             @ApiResponse(code = 200, message = "book successfully updated", response = Book.class),
             @ApiResponse(code = 500, message = "failed to update book", response = ErrorDetail.class)
     })
-    @PutMapping(value = "/data/books/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<?> updateBook(@RequestBody Book updateBook, @PathVariable long id) {
 
         bookService.updateBook(updateBook, id);
@@ -84,7 +84,7 @@ public class BooksController {
         if (bookService.updateBook(updateBook, id) == null) {
             throw new ResourceNotFoundException("could not update book");
         } else {
-            logger.info("/data/books/{id} UPDATE endpoint accessed");
+            logger.info("books/{id} UPDATE endpoint accessed");
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -96,13 +96,13 @@ public class BooksController {
             @ApiResponse(code = 200, message = "Book successfully deleted", response = Book.class),
             @ApiResponse(code = 500, message = "failed to delete Book", response = ErrorDetail.class)
     })
-    @DeleteMapping("/data/books/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteBookById(@PathVariable long id) {
 
         if (bookService.findBookById(id) == null) {
             throw new ResourceNotFoundException("could not find book with id of " + id);
         } else {
-            logger.info("/data/books/{id} DELETE endpoint accessed");
+            logger.info("/books/delete/{id} DELETE endpoint accessed");
             bookService.delete(id);
         }
 

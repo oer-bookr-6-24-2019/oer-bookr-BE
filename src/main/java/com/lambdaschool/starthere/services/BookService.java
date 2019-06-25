@@ -19,7 +19,6 @@ public interface BookService {
 
     Book findBookById(long id);
 
-    boolean addReview(Review review, long id);
 
     void addbook(Book addBook);
 }

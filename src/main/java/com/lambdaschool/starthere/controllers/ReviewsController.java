@@ -60,19 +60,26 @@ public class ReviewsController {
             @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "specifies the page size"),
             @ApiImplicitParam(name = "sort", dataType = "string", allowMultiple = true, paramType = "query", value = "Sorts result [name, address, etc]")
     })
-    @GetMapping(value = "/books/{bookid}", produces = {"application/json"})
+    @GetMapping(value = "/bybook/{bookid}", produces = {"application/json"})
     public ResponseEntity<?> listReviewsByBook(@PathVariable long bookid, @PageableDefault(page = 0, size = 10) Pageable pageable)
     {
 
         List<Review> myReviews = reviewService.findReviewsByBook(pageable, bookid);
 
         if (myReviews == null) {
-            throw new ResourceNotFoundException("no reviews found");
+            throw new ResourceNotFoundException("no reviews found for this book");
         } else{
-            logger.info("/reviews/books/{bookid} accessed");
+            logger.info("/reviews/books/{bookid} GET accessed");
         }
 
         return new ResponseEntity<>(myReviews, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/byreview/{reviewid}")
+    public ResponseEntity<?> editReview(@PathVariable long reviewid, @RequestBody Review review) {
+        reviewService.updateReview(review, reviewid);
+        logger.info("/reviews/byreview/{reviewid} PUT accessed");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
@@ -81,14 +88,13 @@ public class ReviewsController {
             @ApiResponse(code = 200, message = "review successfully added", response = Review.class),
             @ApiResponse(code = 500, message = "failed to add review", response = ErrorDetail.class)
     })
-    @PostMapping(value = "/addreview/book/{id}")
-    public ResponseEntity<?> postReview(@RequestBody Review review, @PathVariable long id) {
+    @PostMapping(value = "/add}")
+    public ResponseEntity<?> postReview(@RequestBody Review review) {
 
 
-        if (!bookService.addReview(review, id)) {
-            throw new ResourceNotFoundException("could not add review");
-        }
-        logger.info("/data/books/{id} UPDATE endpoint accessed");
+        reviewService.save(review);
+
+        logger.info("/reviews/add POST endpoint accessed");
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

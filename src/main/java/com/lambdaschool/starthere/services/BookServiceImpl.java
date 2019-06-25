@@ -34,7 +34,12 @@ public class BookServiceImpl implements BookService {
         Book currentBook = repo.findById(id).orElseThrow(EntityNotFoundException::new);
         if(book.getBooktitle() != null){
             currentBook.setBooktitle(book.getBooktitle());
-        }//TODO: Add the rest of the fields to be updated
+            currentBook.setAuthor(book.getAuthor());
+            currentBook.setImageurl(book.getImageurl());
+            currentBook.setLicense(book.getLicense());
+            currentBook.setPublisher(book.getPublisher());
+            currentBook.setUrl(book.getUrl());
+        }
         repo.save(currentBook);
         return currentBook;
     }
@@ -62,11 +67,7 @@ public class BookServiceImpl implements BookService {
         return repo.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    @Override
-    public boolean addReview(Review review, long id) {
-        Book currentBook = repo.findById(id).orElseThrow(EntityNotFoundException::new);
-        return currentBook.getReviews().add(review);
-    }
+
 
     @Override
     public void addbook(Book addBook) {

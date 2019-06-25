@@ -12,4 +12,6 @@ public interface ReviewService {
     List<Review> findAll(Pageable pageable);
 
     List<Review> findReviewsByBook(Pageable pageable, Long id);
+
+    Review updateReview(Review review, long reviewid);
 }
