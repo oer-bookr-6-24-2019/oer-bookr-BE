@@ -76,7 +76,7 @@ reviews/add/bybookid/{bookid} Example:
 }
 ```
 
-reviews/byreview/{reviewid} (PUT) Example:
+reviews/update/byreview/{reviewid}  Example:
 ```
 {
   "rating": 3,
