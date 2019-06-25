@@ -12,7 +12,13 @@ Body (application/Json)
 
 Returns
 ```
-empty []
+{
+    "access_token": "ba94fbf1-4dd6-41c9-9744-6b9b17829641",
+    "token_type": "bearer",
+    "refresh_token": "6c8a8105-3a4a-4296-9f1a-65997fd97aca",
+    "expires_in": 3599,
+    "scope": "read write trust"
+}
 ```
 https://sgs-lambda-bookr.herokuapp.com/users/users to list all users (must be admin)
 
@@ -76,7 +82,7 @@ reviews/add/bybookid/{bookid} Example:
 }
 ```
 
-reviews/byreview/{reviewid} (PUT) Example:
+reviews/update/byreview/{reviewid}  Example:
 ```
 {
   "rating": 3,
