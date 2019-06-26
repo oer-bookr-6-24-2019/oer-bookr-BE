@@ -6,8 +6,10 @@ Endpoint: https://sgs-lambda-bookr.herokuapp.com/createnewuser
 
 Body (application/Json)
 ```
-"username" : "yourUsername"
+{
+"username" : "yourUsername",
 "password" : "yourPassword"
+}
 ```
 
 Returns
