@@ -27,19 +27,14 @@ https://sgs-lambda-bookr.herokuapp.com/users/users to list all users (must be ad
 
 ### Login
 
-Endpoint: https://sgs-lambda-bookr.herokuapp.com/oauth/token
+Endpoint: https://sgs-lambda-bookr.herokuapp.com/loginuser
 
-Headers:
+Body (application/Json)
 ``` 
-Authorization : Basic bGFtYmRhLWNsaWVudDpsYW1iZGEtc2VjcmV0
-Content-Type : application/x-www-form-urlencoded
-```
-Body (application/x-www-form-urlencoded)
-parenthesized values used for testing
-```
-grant_type : password
-username : yourUsername (admin)
-password : yourPassword (password)
+{
+"username" : "yourUsername",
+"password" : "yourPassword"
+}
 ```
 
 Returns:
