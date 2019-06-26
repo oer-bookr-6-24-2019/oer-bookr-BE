@@ -1,5 +1,6 @@
 package com.lambdaschool.starthere.controllers;
 
+import com.lambdaschool.starthere.exceptions.ResourceNotFoundException;
 import com.lambdaschool.starthere.models.User;
 import com.lambdaschool.starthere.models.UserRoles;
 import com.lambdaschool.starthere.services.RoleService;
@@ -8,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +21,12 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 @RestController
-public class OpenController
-{
+public class OpenController {
     private static final Logger logger = LoggerFactory.getLogger(RolesController.class);
 
     @Autowired
@@ -34,8 +38,7 @@ public class OpenController
     @PostMapping(value = "/createnewuser", consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<?> addNewUser(HttpServletRequest request, @Valid
     @RequestBody
-            User newuser) throws URISyntaxException
-    {
+            User newuser) throws URISyntaxException {
 
         logger.trace(request.getRequestURI() + " accessed");
 
@@ -44,11 +47,36 @@ public class OpenController
         newuser.setUserRoles(newRoles);
 
         String temp = newuser.getPasswordRaw();
-        newuser =  userService.save(newuser); //passwordRaw is nullified
+        try {
+            newuser = userService.save(newuser); //passwordRaw is nullified
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("This username is taken");
+        }
 
 
+        return validateUser(newuser, temp);
+    }
+
+
+    @PostMapping(value = "/loginuser", consumes = {"application/json"}, produces = {"application/json"})
+    public ResponseEntity<?> loginUser(HttpServletRequest request, @Valid
+    @RequestBody
+            User user) throws URISyntaxException {
+
+        logger.trace(request.getRequestURI() + " accessed");
+
+
+        String temp = user.getPasswordRaw();
+
+        return validateUser(user, temp);
+
+
+    }
+
+    private ResponseEntity<?> validateUser(User user, String temp) {
         String loginUrl
-                = "https://sgs-lambda-bookr.herokuapp.com//oauth/token";
+                = "https://sgs-lambda-bookr.herokuapp.com/oauth/token";
+
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -56,27 +84,14 @@ public class OpenController
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         headers.add("Authorization", "Basic bGFtYmRhLWNsaWVudDpsYW1iZGEtc2VjcmV0");
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("grant_type", "password");
-        map.add("username", newuser.getUsername());
+        map.add("username", user.getUsername());
         map.add("password", temp);
         HttpEntity<MultiValueMap<String, String>> request2 = new HttpEntity<>(map, headers);
         ResponseEntity<String> response = restTemplate.postForEntity(
-                loginUrl, request2 , String.class);
-
-
-
-
-/*        // set the location header for the newly created resource - to another controller!
-        HttpHeaders responseHeaders = new HttpHeaders();
-        URI createUserURI = ServletUriComponentsBuilder
-                .fromUriString(request.getServerName() + ":" + request.getLocalPort() + "/users/user/{userId}")
-                .buildAndExpand(newuser.getUserid()).toUri();
-        responseHeaders.setLocation(createUserURI);*/
-
-
+                loginUrl, request2, String.class);
         return response;
-        //return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
 }
